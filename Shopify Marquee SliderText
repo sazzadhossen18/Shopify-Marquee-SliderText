@@ -1,0 +1,197 @@
+
+{%- if  section.blocks.size > 0 and section.settings.show_announcement_bar -%}
+
+
+<style> 
+
+
+:root {
+  --marquee-width: 100vw;
+  --marquee-height: 20vh;
+  /* --marquee-elements: 12; */ /* defined with JavaScript */
+  --marquee-elements-displayed: 5;
+  --marquee-element-width: calc(var(--marquee-width) / var(--marquee-elements-displayed));
+  --marquee-animation-duration: calc(var(--marquee-elements) * 3s);
+}
+
+
+.marquee {
+  width: 100vw;
+  height:10vh;
+  background-color: #111;
+  color: #eee;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee:before, .marquee:after {
+  position: absolute;
+  top: 0;
+  width: 10rem;
+  height: 100%;
+  content: "";
+  z-index: 1;
+}
+.marquee:before {
+  left: 0;
+  background: linear-gradient(to right, #111 0%, transparent 100%);
+}
+.marquee:after {
+  right: 0;
+  background: linear-gradient(to left, #111 0%, transparent 100%);
+}
+
+
+.marquee-content {
+    list-style: none;
+    height: 100%;
+    margin-top: 0px;
+    /* justify-content: center; */
+    align-content: flex;
+    display: flex;
+  gap:30px;
+    /* align-items: center; */
+    align-content: center;
+    animation: scrolling 10s linear infinite;
+}
+
+
+
+ .marquee-content:hover {
+  animation-play-state: paused;
+} 
+
+@keyframes scrolling {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * var(--marquee-element-width) * var(--marquee-elements))); }
+}
+
+.marquee-content li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+  flex-shrink: 0;
+  
+  max-height: 100%;
+  font-size:20px;
+  white-space: nowrap;
+  color: #fff;
+}
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+.marquee-content li {
+  font-size:15px;
+ 
+}
+  
+.marquee {
+    height: 6vh;
+   
+}
+
+
+
+}
+
+
+</style> 
+ 
+ 
+ 
+ 
+ 
+ 
+ <div class="marquee">
+    <ul class="marquee-content">
+         {%- for block in section.blocks -%}
+        <li style="color: white;">{{block.settings.message}}</li>
+          {%- endfor -%}
+       
+
+    </ul>
+  </div>
+
+
+<script> 
+      const root = document.documentElement;
+      const marqueeElementsDisplayed = getComputedStyle(root).getPropertyValue("--marquee-elements-displayed");
+      const marqueeContent = document.querySelector("ul.marquee-content");
+      
+      root.style.setProperty("--marquee-elements", marqueeContent.children.length);
+      
+      for(let i=0; i<marqueeElementsDisplayed; i++) {
+        marqueeContent.appendChild(marqueeContent.children[i].cloneNode(true));
+      }
+
+
+</script> 
+
+{%- endif -%}
+
+
+
+
+
+
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_announcement_bar",
+        "label": "Show"
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay"
+      },
+      {
+        "type": "text",
+        "id": "delay",
+        "label": "Delay between transitions (in ms)",
+        "default": "5000"
+      },
+      {
+        "type": "color",
+        "id": "colorBackground",
+        "label": "Background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "colorText",
+        "label": "Text color",
+        "default": "#000"
+      }
+],
+"blocks": [
+      {
+        "type": "header",
+        "name": "Message",
+        "settings": [
+{
+              "id": "message",
+              "type": "textarea",
+             "label": "Message"
+            }
+        ]
+      }
+]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
