@@ -1,3 +1,172 @@
+Method 1:
+
+<style>
+  .text_marquee_slider {
+    display: flex;
+    width: 100%;
+}
+.text_marquee_slider {
+    --space: 2rem;
+    display: grid;
+    align-content: center;
+    overflow: hidden;
+    gap: var(--space);
+    width: 100%;
+    font-family: Corben,system-ui,sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+  .img_with_text_marquee {
+    width: 100%;
+}
+.img_with_text_marquee .text_marquee_slider_wrapper {
+    z-index: 1;
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+.text_marquee_slider_wrapper .marquee {
+    padding: 13.5px 0;
+}
+.text_marquee_slider{
+   --space: 2rem;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+  gap: var(--space);
+  width: 100%;
+  font-family: "Corben", system-ui, sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+.marquee {
+  --duration: 15s;
+  --gap: var(--space);
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 2.4rem;
+   
+}
+.marquee_group {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--gap);
+  min-width: 100%;
+  animation: scroll var(--duration) linear infinite;
+}
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+  .text_marquee_slider_wrapper .marquee .marquee_group p {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: -.01em;
+    text-transform: capitalize;
+    font-family: Poppins;
+}
+
+@media only screen and (max-width: 989px) {
+    .img_with_text_marquee .text_marquee_slider_wrapper {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+}
+   .marquee:hover .marquee_group{
+  animation-play-state: paused;
+} 
+</style>
+
+
+<div class="text_marquee_slider">
+<div class="img_with_text_marquee">
+  <div class="text_marquee_slider_wrapper">
+    <div class="marquee" style="background-color: #000000">
+      <div class="marquee_group">
+
+          {%- for block in section.blocks -%}
+          <p style="color: #ffffff;">{{block.settings.message}}</p>
+         {%- endfor -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</div>
+ <script>
+      var copy = document.querySelector(".marquee_group").cloneNode(true);
+      document.querySelector(".marquee").appendChild(copy);
+    </script>
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_announcement_bar",
+        "label": "Show"
+      },
+      {
+        "type": "color",
+        "id": "colorBackground",
+        "label": "Background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "colorText",
+        "label": "Text color",
+        "default": "#000"
+      }
+    ],
+    "blocks": [
+          {
+            "type": "header",
+            "name": "Message",
+            "settings": [
+              {
+              "id": "message",
+              "type": "textarea",
+             "label": "Message"
+            }
+            ]
+          }
+      ]
+  }
+{% endschema %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {%- if  section.blocks.size > 0 and section.settings.show_announcement_bar -%}
 
